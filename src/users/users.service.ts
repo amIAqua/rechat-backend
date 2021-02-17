@@ -8,15 +8,18 @@ import { User, UserDocument } from './schemas/user.schema'
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async getAllUsers() {
-    return this.userModel.find().exec()
+  // find user in database for login
+  async findUser(name: string) {
+    return this.userModel.findOne({ name })
   }
 
+  // create new user in database after register
   async createNewUser(userDto: CreateUserDTO): Promise<User> {
     const newUser = new this.userModel(userDto)
     return newUser.save()
   }
 
+  // remove user when account is deleted
   async removeUser(_id: string) {
     return this.userModel.findByIdAndDelete(_id)
   }
