@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
+import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UsersModule } from './users/users.module'
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationModule } from './authentication/authentication.module'
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://dmitry:dmitry12345@cluster0.lphco.mongodb.net/rechat?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     UsersModule,
     AuthenticationModule,
   ],

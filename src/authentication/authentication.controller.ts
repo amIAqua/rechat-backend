@@ -11,6 +11,11 @@ export class AuthenticationController {
     return this.authService.login(loginUserDto)
   }
 
+  @Post('verify')
+  verifyUserToken(@Body() body: { token: string }) {
+    return this.authService.verifyUserToken(body.token)
+  }
+
   @Get('logout')
   logout() {
     // service
