@@ -21,6 +21,7 @@ export class UsersService {
     const user = {
       ...userDto,
       password: hashedPassword,
+      dialogs: [],
     }
 
     const newUser = new this.userModel(user)
@@ -30,5 +31,16 @@ export class UsersService {
   // remove user when account is deleted
   async removeUser(_id: string) {
     return this.userModel.findByIdAndDelete(_id)
+  }
+
+  // get user dialogs
+  async getUserDialogs(_id: string) {
+    const user = await this.userModel.findById({ _id })
+
+    if (!user) {
+      return null
+    }
+
+    return user.dialogs
   }
 }

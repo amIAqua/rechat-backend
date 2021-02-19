@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'
 import { LoginUserCredentialsDTO } from './dto/authentication.dto'
-import bcrypt from 'bcrypt'
 import { compareUserPassword } from './utils/hashingPassword.utils.'
 
 export interface IDecodedUser {
@@ -20,7 +19,7 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginCredentalsDto: LoginUserCredentialsDTO): Promise<string> {
+  async login(loginCredentalsDto: LoginUserCredentialsDTO): Promise<any> {
     const candidate = await this.usersService.findUser(loginCredentalsDto.name)
 
     const comparedPassword = await compareUserPassword(
@@ -33,14 +32,24 @@ export class AuthenticationService {
     }
 
     // creating jwt token
-    return this.jwtService.sign(
+    const token = this.jwtService.sign(
       {
-        name: candidate.name,
-        password: candidate.password,
-        _id: candidate._id,
+        user: {
+          name: candidate.name,
+          password: candidate.password,
+          dialogs: candidate.dialogs,
+          _id: candidate._id,
+        },
       },
       { expiresIn: '2m' },
     )
+
+    return {
+      name: candidate.name,
+      dialogs: candidate.dialogs,
+      _id: candidate._id,
+      token,
+    }
   }
 
   async verifyUserToken(token: string): Promise<any> {
