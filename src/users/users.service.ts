@@ -9,9 +9,13 @@ import { hashUserPassword } from 'src/authentication/utils/hashingPassword.utils
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  // find user in database for login
-  async findUser(name: string) {
+  // find user in database by name
+  async findUserByName(name: string) {
     return this.userModel.findOne({ name })
+  }
+
+  async findUserById(_id: string) {
+    return this.userModel.findById({ _id })
   }
 
   // create new user in database after register
@@ -49,7 +53,7 @@ export class UsersService {
     const candidate = await this.userModel.findById({ _id })
 
     if (!candidate) {
-      return
+      return null
     }
 
     candidate.avatarURL = avatarURL
@@ -60,7 +64,7 @@ export class UsersService {
     const candidate = await this.userModel.findById({ _id })
 
     if (!candidate) {
-      return
+      return null
     }
 
     return candidate.avatarURL

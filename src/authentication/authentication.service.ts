@@ -20,7 +20,9 @@ export class AuthenticationService {
   ) {}
 
   async login(loginCredentalsDto: LoginUserCredentialsDTO): Promise<any> {
-    const candidate = await this.usersService.findUser(loginCredentalsDto.name)
+    const candidate = await this.usersService.findUserByName(
+      loginCredentalsDto.name,
+    )
 
     const comparedPassword = await compareUserPassword(
       candidate.password,
