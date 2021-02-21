@@ -21,7 +21,8 @@ export class UsersService {
     const user = {
       ...userDto,
       password: hashedPassword,
-      dialogs: [],
+      dialogs: userDto.dialogs,
+      avatar: null,
     }
 
     const newUser = new this.userModel(user)
@@ -42,5 +43,26 @@ export class UsersService {
     }
 
     return user.dialogs
+  }
+
+  async uploadUserAvatar(_id: string, avatarURL: any) {
+    const candidate = await this.userModel.findById({ _id })
+
+    if (!candidate) {
+      return
+    }
+
+    candidate.avatarURL = avatarURL
+    return candidate.save()
+  }
+
+  async getUserAvatar(_id: string) {
+    const candidate = await this.userModel.findById({ _id })
+
+    if (!candidate) {
+      return
+    }
+
+    return candidate.avatarURL
   }
 }

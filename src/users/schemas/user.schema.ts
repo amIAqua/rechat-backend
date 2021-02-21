@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Buffer } from 'buffer'
 import { Document } from 'mongoose'
 
 export type UserDocument = User & Document
@@ -13,6 +14,9 @@ export class User {
 
   @Prop({ type: Array })
   dialogs: []
+
+  @Prop({ required: false })
+  avatarURL: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

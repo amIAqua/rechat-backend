@@ -41,20 +41,24 @@ export class AuthenticationService {
           _id: candidate._id,
         },
       },
-      { expiresIn: '2m' },
+      { expiresIn: '30m' },
     )
+
+    const avatar_url = candidate.avatarURL ?? null
 
     return {
       name: candidate.name,
       dialogs: candidate.dialogs,
       _id: candidate._id,
       token,
+      avatarURL: avatar_url,
     }
   }
 
   async verifyUserToken(token: string): Promise<any> {
     try {
       const decodedUserFromToken = await this.jwtService.verify(token)
+
       return decodedUserFromToken
     } catch (error) {
       return false

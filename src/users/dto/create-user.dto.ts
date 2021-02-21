@@ -6,4 +6,6 @@ export class CreateUserDTO {
 
   @IsNotEmpty()
   readonly password: string
+
+  readonly dialogs: Array<any>
 }
